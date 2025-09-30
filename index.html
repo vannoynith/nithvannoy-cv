@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nith Vannoy - Portfolio</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <title>Nith Vannoy</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    
 </head>
-<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="50">
+<body>
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">Nith Vannoy</a>
@@ -19,7 +17,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
@@ -28,56 +26,125 @@
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="container" data-aos="zoom-in" data-aos-duration="1200">
-            <h1>Hello, I'm Nith Vannoy</h1>
-            <p>Designer, Web Developer, and Mobile App Developer.</p>
-            <a href="about.html" class="btn btn-primary">Discover More</a>
+ <section id="home" class="hero">
+    <canvas id="three-canvas"></canvas>
+    <div class="container hero-content-wrapper">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-start hero-text">
+                <h1>Hello, I'm Nith Vannoy</h1>
+                <h2 id="job-title-cycler"></h2>
+                <a href="about.html" class="btn btn-primary">Discover More</a>
+            </div>
+            <div class="col-lg-6 d-flex justify-content-center justify-content-lg-end ">
+                <img src="assets/me.jpg" alt="Nith Vannoy" class="img-fluid hero-image">
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <footer>
         <p>© 2025 Nith Vannoy. All rights reserved.</p>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>
-        AOS.init({
-            once: true,
-            offset: 200,
-            duration: 1000,
-            easing: 'ease-out'
-        });
+    // Job Title Cycling Effect
+    window.addEventListener('load', () => {
+        const jobTitles = [
+            "Designer", 
+            "Full Stack Developer", 
+            "Mobile App Developer", 
+            "Software Developer"
+        ];
+        let titleIndex = 0;
+        const jobTitleElement = document.getElementById('job-title-cycler');
+        
+        function cycleTitles() {
+            jobTitleElement.classList.add('fade-out');
+            setTimeout(() => {
+                jobTitleElement.textContent = jobTitles[titleIndex];
+                jobTitleElement.classList.remove('fade-out');
+                jobTitleElement.classList.add('fade-in');
 
-        // Smooth scroll for nav links
-        document.querySelectorAll('.nav-link').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                } else {
-                    window.location.href = targetId;
-                }
-            });
-        });
+                titleIndex = (titleIndex + 1) % jobTitles.length;
+            }, 500); // Wait for fade-out to complete
 
-        // Navbar shrink on scroll
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.padding = '0.5rem 0';
-                navbar.style.background = 'rgba(255, 255, 255, 0.15)';
-            } else {
-                navbar.style.padding = '1rem 0';
-                navbar.style.background = 'rgba(255, 255, 255, 0.1)';
+            setTimeout(() => {
+                jobTitleElement.classList.remove('fade-in');
+            }, 2000); // Duration of fade-in
+
+        }
+
+        // Initialize and set interval
+        cycleTitles(); // Set initial title
+        setInterval(cycleTitles, 3000); // Change title every 3 seconds (3000ms)
+    });
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Ensure Three.js is loaded before running the script
+        window.onload = function () {
+            if (typeof THREE === 'undefined') {
+                console.error('Three.js failed to load. Please check the CDN or network connection.');
+                return;
             }
-        });
+
+            const canvas = document.getElementById('three-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // Create sliding 3D planes
+            const geometry = new THREE.PlaneGeometry(2, 2);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: 0x00ccff, 
+                side: THREE.DoubleSide, 
+                transparent: true, 
+                opacity: 0.3 
+            });
+            const planes = [];
+            for (let i = 0; i < 20; i++) {
+                const plane = new THREE.Mesh(geometry, material);
+                plane.position.set(
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 20,
+                    Math.random() * -10
+                );
+                plane.rotation.set(
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI
+                );
+                planes.push(plane);
+                scene.add(plane);
+            }
+
+            camera.position.z = 5;
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                planes.forEach(plane => {
+                    plane.position.y += 0.02; // Slide upwards
+                    if (plane.position.y > 10) {
+                        plane.position.y = -10; // Reset to bottom
+                        plane.position.x = (Math.random() - 0.5) * 20;
+                        plane.position.z = Math.random() * -10;
+                    }
+                    plane.rotation.z += 0.01; // Gentle rotation
+                });
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
     </script>
 </body>
 </html>
