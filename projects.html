@@ -13,6 +13,7 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: #ffffff;
             overflow-x: hidden;
+            scroll-padding-top: 100px; /* Important for fixed navbar offset */
         }
 
         .navbar {
@@ -55,7 +56,8 @@
         }
 
         .projects {
-            padding: 100px 0;
+            padding-top: 100px; 
+            padding-bottom: 50px;
             min-height: 100vh;
         }
 
@@ -65,6 +67,31 @@
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
             margin-bottom: 3rem;
         }
+        
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffff;
+            text-align: center;
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+          
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            width: auto;
+        }
+
+        /* Styling for the new jump buttons */
+        .jump-btn-container {
+            margin-bottom: 3rem;
+        }
+        .jump-btn {
+            min-width: 250px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
 
         .project-card {
             background: rgba(255, 255, 255, 0.05);
@@ -129,9 +156,19 @@
             font-size: 0.9rem;
         }
 
+        @media (max-width: 992px) {
+            .jump-btn {
+                min-width: 90%;
+                margin-bottom: 1rem !important;
+            }
+        }
         @media (max-width: 768px) {
             .projects h2 {
                 font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
             }
 
             .project-card .card-title {
@@ -164,7 +201,54 @@
 
     <section class="projects section py-5">
         <div class="container">
-            <h2 class="text-center mb-5 mt-5" data-aos="fade-up">My Projects</h2>
+            <h2 class="text-center mb-3 mt-5" data-aos="fade-up">My Projects</h2>
+            
+            <div class="text-center jump-btn-container" data-aos="fade-up" data-aos-delay="50">
+                <a href="#web-app" class="btn btn-primary mx-2 jump-btn">Web & Application Projects</a>
+                <a href="#graphic-video" class="btn btn-primary mx-2 jump-btn">Graphic & Video Projects</a>
+            </div>
+
+            
+
+            <div class="text-center " id="graphic-video" >
+                <h3 class="section-title" data-aos="fade-up">Graphic & Video</h3>
+            </div>
+            <div class="row g-4 project-grid">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="project-card card h-100">
+                        <img src="assets/gpd.jpg" class="card-img-top" alt="AI-Powered Hybrid Learning System">
+                        <div class="card-body">
+                            <h3 class="card-title">Graphic Design</h3>
+                            <p class="card-text">The Design Posters and Graphics..</p>
+                            <a href="https://drive.google.com/drive/u/1/folders/1E3PnfNZvveKcVKJIUFBHBLZ5jiIUvDjn" target="_blank" class="btn btn-primary stretched-link">Go -></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="project-card card h-100">
+                        <img src="assets/vdo.png" class="card-img-top" alt="AI-Powered Hybrid Learning System">
+                        <div class="card-body">
+                            <h3 class="card-title">Video Graphic Design</h3>
+                            <p class="card-text">Video Editing and Motion Graphic.</p>
+                            <a href="https://drive.google.com/drive/u/1/folders/1wLcCMw746pJT8mJ86ImgaTn0lVAfxWEw" target="_blank" class="btn btn-primary stretched-link">Go -></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="project-card card h-100">
+                        <img src="assets/file.jfif" class="card-img-top" alt="AI-Powered Hybrid Learning System">
+                        <div class="card-body">
+                            <h3 class="card-title">Original of Files.</h3>
+                            <p class="card-text">The Source file of video and graphic.</p>
+                            <a href="https://drive.google.com/drive/u/1/folders/1wLcCMw746pJT8mJ86ImgaTn0lVAfxWEw" target="_blank" class="btn btn-primary stretched-link">Go -></a>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+            
+                <div class="text-center" id="web-app" >
+                <h3 class="section-title" data-aos="fade-up">Web & Application Development</h3>
+            </div>
             <div class="row g-4 project-grid">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="project-card card h-100">
@@ -202,7 +286,7 @@
                         <div class="card-body">
                             <h3 class="card-title">Movie Recommend Application</h3>
                             <p class="card-text">A mobile application for browsing movies with AI-driven recommendations.</p>
-                            <a href="https://github.com/Winter1212/mvrapp" target="_blank" class="btn btn-primary stretched-link">View Project</a>
+                            <a href="https://github.com/vannoynith/watchm" target="_blank" class="btn btn-primary stretched-link">View Project</a>
                         </div>
                     </div>
                 </div>
@@ -216,9 +300,10 @@
                         </div>
                     </div>
                 </div>
-                
                
             </div>
+            </div>
+            
         </div>
     </section>
 
@@ -236,19 +321,16 @@
             easing: 'ease-out'
         });
 
-        // Smooth scroll for nav links
-        document.querySelectorAll('.nav-link').forEach(anchor => {
+        // The custom smooth scroll logic has been updated to use the browser's built-in smooth scroll 
+        // for better performance and to respect the fixed navbar height via scroll-padding-top in CSS.
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
                 const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
+                if (targetId.length > 1) { // Check if it's not just "#"
+                    e.preventDefault();
+                    document.querySelector(targetId).scrollIntoView({
                         behavior: 'smooth'
                     });
-                } else {
-                    window.location.href = targetId;
                 }
             });
         });
