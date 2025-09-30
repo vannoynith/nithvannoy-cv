@@ -20,7 +20,7 @@ body {
 }
 
 .navbar {
-    background: rgba(26, 26, 46, 0.3); /* Adjusted to a slightly darker, more visible glassmorphism effect */
+    background: rgba(26, 26, 46, 0.3);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--glass-border);
     padding: 1rem 0;
@@ -39,7 +39,11 @@ body {
     font-weight: 500;
     margin: 0 1rem;
     position: relative;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateZ(10px);
 }
 
 .nav-link:hover::after {
@@ -61,7 +65,6 @@ body {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-/* Ensure the toggler button itself has no conflicting background */
 .navbar-toggler {
     border: none;
     background: transparent;
@@ -78,26 +81,28 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: url('https://source.unsplash.com/random/1920x1080/?tech') no-repeat center center/cover;
     position: relative;
     overflow: hidden;
-    animation: glow-effect 6s ease-in-out infinite;
 }
 
-.hero::before {
-    content: '';
+#three-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
     z-index: 1;
+    opacity: 0.4; /* Slightly lower opacity for glowing cubes */
 }
 
 .hero .container {
     position: relative;
     z-index: 2;
+    perspective: 1000px;
+    background: rgba(26, 26, 46, 0.3); /* Stronger glass effect for contrast */
+    padding: 2.5rem;
+    border-radius: 15px;
+    backdrop-filter: blur(8px);
 }
 
 .hero h1 {
@@ -105,6 +110,7 @@ body {
     font-weight: 900;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
     margin-bottom: 1.5rem;
+    transform-style: preserve-3d;
 }
 
 .hero p {
@@ -113,6 +119,7 @@ body {
     max-width: 600px;
     margin: 0 auto 2rem;
     color: #e0e0e0;
+    transform-style: preserve-3d;
 }
 
 .btn-primary {
@@ -123,11 +130,12 @@ body {
     font-size: 1.1rem;
     border-radius: 50px;
     transition: all 0.3s ease;
+    transform-style: preserve-3d;
 }
 
 .btn-primary:hover {
     background: var(--secondary-color);
-    transform: translateY(-3px);
+    transform: translateY(-3px) translateZ(20px);
     box-shadow: 0 5px 15px rgba(0, 238, 255, 0.4);
 }
 
@@ -148,6 +156,7 @@ body {
     border-radius: 15px;
     padding: 2rem;
     backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
 }
 
 .about-image img {
@@ -161,7 +170,7 @@ body {
 }
 
 .about-image img:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) translateZ(20px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -183,10 +192,11 @@ body {
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
 }
 
 .project-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-10px) translateZ(30px);
     box-shadow: 0 10px 20px rgba(0, 238, 255, 0.2);
 }
 
@@ -197,7 +207,7 @@ body {
 }
 
 .project-card:hover img {
-    transform: scale(1.05);
+    transform: scale(1.05) translateZ(20px);
 }
 
 .project-card .card-body {
@@ -243,10 +253,11 @@ body {
     width: 45%;
     backdrop-filter: blur(10px);
     transition: transform 0.3s ease;
+    transform-style: preserve-3d;
 }
 
 .timeline-item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) translateZ(20px);
 }
 
 .timeline-item:nth-child(odd) {
@@ -327,7 +338,7 @@ body {
 }
 
 .soft-skills li:hover, .languages li:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) translateZ(20px);
     background: var(--secondary-color);
     box-shadow: 0 5px 15px rgba(0, 238, 255, 0.4);
 }
@@ -374,6 +385,82 @@ body {
 .contact-info a:hover {
     color: var(--secondary-color);
 }
+/* --- New Hero Section Styling --- */
+
+.hero-text h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+#job-title-cycler {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    min-height: 2.5rem; /* Prevents layout shift during title change */
+    margin-bottom: 2rem;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Job Title Fade Effect */
+.fade-out {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+/* Floating Image Animation */
+.hero-image {
+    max-width: 450px; /* Set a max size for the image */
+    height: auto;
+    border-radius: 15px;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(6, 226, 255, 0.4);
+    animation: float-ease-in-out 6s ease-in-out infinite;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+@keyframes float-ease-in-out {
+    0% {
+        transform: translateY(0px) translateZ(0);
+        
+    }
+    50% {
+        transform: translateY(-20px) translateZ(50px);
+     
+    }
+    100% {
+        transform: translateY(0px) translateZ(0);
+       
+    }
+}
+
+/* Adjustments for Mobile */
+@media (max-width: 991px) {
+    .hero-content-wrapper {
+        padding: 2rem;
+    }
+
+    .hero-text {
+        text-align: center !important;
+        margin-bottom: 2rem;
+    }
+    
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+
+    #job-title-cycler {
+        font-size: 1.5rem;
+    }
+
+    .hero-image {
+        max-width: 300px;
+    }
+}
 
 footer {
     text-align: center;
@@ -383,11 +470,13 @@ footer {
     font-size: 0.9rem;
     backdrop-filter: blur(10px);
 }
+
 @keyframes glow-effect {
     0% { box-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color), 0 0 15px var(--primary-color), 0 0 20px var(--primary-color), 0 0 25px var(--primary-color); }
     50% { box-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color), 0 0 30px var(--secondary-color), 0 0 40px var(--secondary-color), 0 0 50px var(--secondary-color); }
     100% { box-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color), 0 0 15px var(--primary-color), 0 0 20px var(--primary-color), 0 0 25px var(--primary-color); }
 }
+
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2.5rem;
@@ -427,9 +516,11 @@ footer {
     .timeline-date {
         font-size: 1rem;
     }
-.about {
-    margin-top: 10px;
-}
+
+    .about {
+        margin-top: 10px;
+    }
+
     .about-image img {
         max-width: 200px;
     }
@@ -440,5 +531,9 @@ footer {
 
     .contact-info p {
         font-size: 1rem;
+    }
+
+    .hero .container {
+        padding: 1.5rem;
     }
 }
